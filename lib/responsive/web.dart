@@ -17,7 +17,7 @@ class _WebScerrenState extends State<WebScerren> {
   final PageController _pageController = PageController();
   
   int screenNumber = 0;
-  int selectedScreen = 0;
+  
   double primaryIconSize = 32;
   double secondaryIconSizr = 24;
   @override
@@ -35,7 +35,7 @@ class _WebScerrenState extends State<WebScerren> {
             icon: Icon(
               Icons.home,
               color: screenNumber==0 ? primaryColor : secondaryColor,
-              size: selectedScreen == 0? primaryIconSize :secondaryIconSizr,
+              size: screenNumber == 0? primaryIconSize :secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(0);
@@ -46,7 +46,7 @@ class _WebScerrenState extends State<WebScerren> {
             icon: Icon(
               Icons.search,
               color: screenNumber==1 ? primaryColor : secondaryColor,
-              size: selectedScreen == 1? primaryIconSize :secondaryIconSizr,
+              size: screenNumber == 1? primaryIconSize :secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(1);
@@ -57,7 +57,7 @@ class _WebScerrenState extends State<WebScerren> {
             icon: Icon(
               Icons.add_a_photo,
               color: screenNumber==2 ? primaryColor : secondaryColor,
-              size: selectedScreen == 2? primaryIconSize :secondaryIconSizr,
+              size: screenNumber == 2? primaryIconSize :secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(2);
@@ -68,7 +68,7 @@ class _WebScerrenState extends State<WebScerren> {
             icon: Icon(
               Icons.favorite,
               color: screenNumber==3 ? primaryColor : secondaryColor,
-              size: selectedScreen == 3? primaryIconSize :secondaryIconSizr,
+              size: screenNumber == 3? primaryIconSize :secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(3);
@@ -79,7 +79,7 @@ class _WebScerrenState extends State<WebScerren> {
             icon: Icon(
               Icons.person,
               color: screenNumber==4 ? primaryColor : secondaryColor,
-              size: selectedScreen == 4? primaryIconSize :secondaryIconSizr,
+              size: screenNumber == 4? primaryIconSize :secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(4);
@@ -98,7 +98,7 @@ class _WebScerrenState extends State<WebScerren> {
         onPageChanged: (index) {
           setState(() {
             screenNumber = index ;
-             selectedScreen = index;
+            
           });
         },
         physics: const NeverScrollableScrollPhysics(),

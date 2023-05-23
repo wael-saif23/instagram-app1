@@ -122,34 +122,7 @@ class _RegisterState extends State<Register> {
   //   );
   // }
 
-  onPasswordChanged(String password) {
-    isPassword8Char = false;
-    isPasswordHas1Number = false;
-    hasUppercase = false;
-    hasLowercase = false;
-    hasSpecialCharacters = false;
-    setState(() {
-      if (password.contains(RegExp(r'.{8,}'))) {
-        isPassword8Char = true;
-      }
-
-      if (password.contains(RegExp(r'[0-9]'))) {
-        isPasswordHas1Number = true;
-      }
-
-      if (password.contains(RegExp(r'[A-Z]'))) {
-        hasUppercase = true;
-      }
-
-      if (password.contains(RegExp(r'[a-z]'))) {
-        hasLowercase = true;
-      }
-
-      if (password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-        hasSpecialCharacters = true;
-      }
-    });
-  }
+  
 
 //   register() async {
 //     setState(() {
@@ -317,12 +290,12 @@ class _RegisterState extends State<Register> {
                   ),
                   TextFormField(
                       onChanged: (password) {
-                        onPasswordChanged(password);
+                        
                       },
                       // we return "null" when something is valid
                       validator: (value) {
-                        return value!.length < 8
-                            ? "Enter at least 8 characters"
+                        return value!.length < 6
+                            ? "Enter at least 6 characters"
                             : null;
                       },
                       autovalidateMode: AutovalidateMode.onUserInteraction,

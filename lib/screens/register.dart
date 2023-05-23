@@ -376,23 +376,26 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 33,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Do not have an account?",
-                          style: TextStyle(fontSize: 18)),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => Login()),
-                            );
-                          },
-                          child: Text('sign in',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  decoration: TextDecoration.underline))),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Do not have an account?",
+                            style: TextStyle(fontSize: 18)),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => Login()),
+                              );
+                            },
+                            child: Text('sign in',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    decoration: TextDecoration.underline))),
+                      ],
+                    ),
                   )
                 ],
               ),

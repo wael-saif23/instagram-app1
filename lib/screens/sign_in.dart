@@ -124,23 +124,26 @@ class _LoginState extends State<Login> {
                 height: 9,
               ),
             
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Do not have an account?",
-                      style: TextStyle(fontSize: 18)),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => Register()),
-                        );
-                      },
-                      child: Text('sign up',
-                          style: TextStyle(
-                              fontSize: 18,
-                              decoration: TextDecoration.underline))),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Do not have an account?",
+                        style: TextStyle(fontSize: 18)),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Register()),
+                          );
+                        },
+                        child: Text('sign up',
+                            style: TextStyle(
+                                fontSize: 18,
+                                decoration: TextDecoration.underline))),
+                  ],
+                ),
               ),
          
            

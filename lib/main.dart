@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/responsive/mopile.dart';
 import 'package:insta_s_m_app/responsive/responsive.dart';
 import 'package:insta_s_m_app/responsive/web.dart';
+import 'package:insta_s_m_app/screens/register.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
-      home:const ResponsivePage(myMobileScreen: MopileScreen(), myWebScreen:WebScerren() ,)
+      home: const Register()
+      // home:const ResponsivePage(myMobileScreen: MopileScreen(), myWebScreen:WebScerren() ,)
     );
   }
 }

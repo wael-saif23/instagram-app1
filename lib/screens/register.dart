@@ -33,8 +33,9 @@ class _RegisterState extends State<Register> {
   final passwordController = TextEditingController();
 
   final usernameController = TextEditingController();
-  final ageController = TextEditingController();
+  
   final titleController = TextEditingController();
+  
 
   bool isPassword8Char = false;
   bool isPasswordHas1Number = false;
@@ -67,7 +68,7 @@ class _RegisterState extends State<Register> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(22),
+          padding: const EdgeInsets.all(22),
           height: 170,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -78,21 +79,21 @@ class _RegisterState extends State<Register> {
                 },
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.camera,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 11,
                     ),
-                    Text(
+                    const Text(
                       "From Camera",
                       style: TextStyle(fontSize: 20),
                     )
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 22,
               ),
               GestureDetector(
@@ -101,14 +102,14 @@ class _RegisterState extends State<Register> {
                 },
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.photo_outlined,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 11,
                     ),
-                    Text(
+                    const Text(
                       "From Gallery",
                       style: TextStyle(fontSize: 20),
                     )
@@ -180,7 +181,7 @@ class _RegisterState extends State<Register> {
     passwordController.dispose();
 
     usernameController.dispose();
-    ageController.dispose();
+    
     titleController.dispose();
     super.dispose();
   }
@@ -191,7 +192,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: mobileBackgroundColor,
       appBar: AppBar(
-        title: Text("Register"),
+        title: const Text("Register"),
         elevation: 0,
         // backgroundColor: appbarGreen,
       ),
@@ -206,15 +207,15 @@ class _RegisterState extends State<Register> {
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(5),
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color.fromARGB(125, 78, 91, 110),
                     ),
                     child: Stack(
                       children: [
                         imgPath == null
-                            ? CircleAvatar(
+                            ? const CircleAvatar(
                                 backgroundColor:
                                     Color.fromARGB(255, 225, 225, 225),
                                 radius: 71,
@@ -234,7 +235,7 @@ class _RegisterState extends State<Register> {
                               showmodel();
                             },
                             icon: const Icon(Icons.add_a_photo),
-                            color: Color.fromARGB(255, 208, 218, 224),
+                            color: const Color.fromARGB(255, 208, 218, 224),
                           ),
                         ),
                       ],
@@ -249,7 +250,7 @@ class _RegisterState extends State<Register> {
                       obscureText: false,
                       decoration: decorationTextfield.copyWith(
                           hintText: "Enter Your username : ",
-                          suffixIcon: Icon(Icons.person))),
+                          suffixIcon: const Icon(Icons.person))),
                   const SizedBox(
                     height: 22,
                   ),
@@ -259,7 +260,7 @@ class _RegisterState extends State<Register> {
                       obscureText: false,
                       decoration: decorationTextfield.copyWith(
                           hintText: "Enter Your title : ",
-                          suffixIcon: Icon(Icons.person_outline))),
+                          suffixIcon: const Icon(Icons.person_outline))),
                   const SizedBox(
                     height: 22,
                   ),
@@ -277,7 +278,7 @@ class _RegisterState extends State<Register> {
                       obscureText: false,
                       decoration: decorationTextfield.copyWith(
                           hintText: "Enter Your Email : ",
-                          suffixIcon: Icon(Icons.email))),
+                          suffixIcon: const Icon(Icons.email))),
                   const SizedBox(
                     height: 22,
                   ),
@@ -302,8 +303,8 @@ class _RegisterState extends State<Register> {
                                 });
                               },
                               icon: isVisable
-                                  ? Icon(Icons.visibility)
-                                  : Icon(Icons.visibility_off)))),
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off)))),
                   const SizedBox(
                     height: 33,
                   ),
@@ -318,6 +319,8 @@ class _RegisterState extends State<Register> {
                           isLoading = true;
                         });
                         await AuthMethods().register(
+                          username: usernameController.text,
+                          tilte: titleController.text,
                             emailll: emailController.text,
                             passworddd: passwordController.text,
                             context: context);
@@ -327,23 +330,23 @@ class _RegisterState extends State<Register> {
                         if (!mounted) return;
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Login()),
+                          MaterialPageRoute(builder: (context) => const Login()),
                         );
                       } else {
                         showSnackBar(context, "ERROR");
                       }
                     },
                     child: isLoading
-                        ? CircularProgressIndicator(
+                        ? const CircularProgressIndicator(
                             color: Colors.white,
                           )
-                        : Text(
+                        : const Text(
                             "Register",
                             style: TextStyle(fontSize: 19),
                           ),
                     style: ButtonStyle(
                       // backgroundColor: MaterialStateProperty.all(BTNgreen),
-                      padding: MaterialStateProperty.all(EdgeInsets.all(12)),
+                      padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))),
                     ),
@@ -356,17 +359,17 @@ class _RegisterState extends State<Register> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Do not have an account?",
+                        const Text("Do not have an account?",
                             style: TextStyle(fontSize: 18)),
                         TextButton(
                             onPressed: () {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Login()),
+                                    builder: (context) => const Login()),
                               );
                             },
-                            child: Text('sign in',
+                            child: const Text('sign in',
                                 style: TextStyle(
                                     fontSize: 18,
                                     decoration: TextDecoration.underline))),

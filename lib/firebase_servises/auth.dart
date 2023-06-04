@@ -31,7 +31,7 @@ class AuthMethods {
 
       users
           .doc(credential.user!.uid)
-          .set({ userdata.convert2Map() })
+          .set( userdata.convert2Map() )
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
 
@@ -41,5 +41,6 @@ class AuthMethods {
     } catch (e) {
       print(e);
     }
+    showSnackBar(context, message);
   }
 }

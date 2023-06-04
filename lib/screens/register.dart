@@ -336,20 +336,20 @@ class _RegisterState extends State<Register> {
                         showSnackBar(context, "ERROR");
                       }
                     },
-                    child: isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : const Text(
-                            "Register",
-                            style: TextStyle(fontSize: 19),
-                          ),
                     style: ButtonStyle(
                       // backgroundColor: MaterialStateProperty.all(BTNgreen),
                       padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))),
                     ),
+                    child: isLoading
+                        ?  const CircularProgressIndicator(
+                            color: Color.fromARGB(255, 118, 118, 118),
+                          )
+                        :  const Text(
+                            "Register",
+                            style: TextStyle(fontSize: 19),
+                          ),
                   ),
                   const SizedBox(
                     height: 33,

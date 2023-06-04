@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:insta_s_m_app/models/user.dart';
 import 'package:insta_s_m_app/share/snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -22,14 +23,15 @@ class AuthMethods {
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
 
+      UserModel userdata = UserModel(
+          emailll: emailll,
+          tilte: tilte,
+          passworddd: passworddd,
+          username: username);
+
       users
           .doc(credential.user!.uid)
-          .set({
-            'Password': passworddd,
-            'Email': emailll,
-            'title': tilte,
-            'username': username
-          })
+          .set({ userdata.convert2Map() })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
 

@@ -1,4 +1,3 @@
-
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -33,15 +32,8 @@ class _RegisterState extends State<Register> {
   final passwordController = TextEditingController();
 
   final usernameController = TextEditingController();
-  
-  final titleController = TextEditingController();
-  
 
-  bool isPassword8Char = false;
-  bool isPasswordHas1Number = false;
-  bool hasUppercase = false;
-  bool hasLowercase = false;
-  bool hasSpecialCharacters = false;
+  final titleController = TextEditingController();
 
   uploadImage2Screen(ImageSource source) async {
     Navigator.pop(context);
@@ -78,15 +70,15 @@ class _RegisterState extends State<Register> {
                   await uploadImage2Screen(ImageSource.camera);
                 },
                 child: Row(
-                  children: [
-                    const Icon(
+                  children: const[
+                     Icon(
                       Icons.camera,
                       size: 30,
                     ),
-                    const SizedBox(
+                     SizedBox(
                       width: 11,
                     ),
-                    const Text(
+                     Text(
                       "From Camera",
                       style: TextStyle(fontSize: 20),
                     )
@@ -101,15 +93,15 @@ class _RegisterState extends State<Register> {
                   uploadImage2Screen(ImageSource.gallery);
                 },
                 child: Row(
-                  children: [
-                    const Icon(
+                  children: const [
+                    Icon(
                       Icons.photo_outlined,
                       size: 30,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 11,
                     ),
-                    const Text(
+                    Text(
                       "From Gallery",
                       style: TextStyle(fontSize: 20),
                     )
@@ -123,56 +115,34 @@ class _RegisterState extends State<Register> {
     );
   }
 
-//   register() async {
-//     setState(() {
-//       isLoading = true;
-//     });
-
-//     try {
-//       final credential =
-//           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-//         email: emailController.text,
-//         password: passwordController.text,
-//       );
-
-// // Upload image to firebase storage
-//       final storageRef = FirebaseStorage.instance.ref("users-imgs/$imgName");
-//       await storageRef.putFile(imgPath!);
-//       String urll = await storageRef.getDownloadURL();
-
-//       print(credential.user!.uid);
-
-//       CollectionReference users =
-//           FirebaseFirestore.instance.collection('userSSS');
-
-//       users
-//           .doc(credential.user!.uid)
-//           .set({
-//             "imgLink":   urll     ,
-//             'username': usernameController.text,
-//             'age': ageController.text,
-//             "title": titleController.text,
-//             "email": emailController.text,
-//             "pass": passwordController.text,
-//           })
-//           .then((value) => print("User Added"))
-//           .catchError((error) => print("Failed to add user: $error"));
-//     } on FirebaseAuthException catch (e) {
-//       if (e.code == 'weak-password') {
-//         showSnackBar(context, "The password provided is too weak.");
-//       } else if (e.code == 'email-already-in-use') {
-//         showSnackBar(context, "The account already exists for that email.");
-//       } else {
-//         showSnackBar(context, "ERROR - Please try again late");
-//       }
-//     } catch (err) {
-//       showSnackBar(context, err.toString());
-//     }
-
-//     setState(() {
-//       isLoading = false;
-//     });
-//   }
+  clickOnRegister() async {
+    if (_formKey.currentState!.validate() &&
+        imgName != null &&
+        imgPath != null) {
+      setState(() {
+        isLoading = true;
+      });
+      await AuthMethods().register(
+        username: usernameController.text,
+        tilte: titleController.text,
+        emailll: emailController.text,
+        passworddd: passwordController.text,
+        context: context,
+        imgName: imgName,
+        imgPath: imgPath,
+      );
+      setState(() {
+        isLoading = false;
+      });
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Login()),
+      );
+    } else {
+      showSnackBar(context, "ERROR");
+    }
+  }
 
   @override
   void dispose() {
@@ -181,7 +151,7 @@ class _RegisterState extends State<Register> {
     passwordController.dispose();
 
     usernameController.dispose();
-    
+
     titleController.dispose();
     super.dispose();
   }
@@ -244,7 +214,10 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 33,
                   ),
-                  TextField(
+                  TextFormField(
+                      validator: (value) {
+                        return value!.isEmpty?"can not be empty": null;
+                      },
                       controller: usernameController,
                       keyboardType: TextInputType.text,
                       obscureText: false,
@@ -309,44 +282,19 @@ class _RegisterState extends State<Register> {
                     height: 33,
                   ),
                   ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()
-                          // &&
-                          //     imgName != null &&
-                          //     imgPath != null
-                          ) {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        await AuthMethods().register(
-                          username: usernameController.text,
-                          tilte: titleController.text,
-                            emailll: emailController.text,
-                            passworddd: passwordController.text,
-                            context: context);
-                        setState(() {
-                          isLoading = false;
-                        });
-                        if (!mounted) return;
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Login()),
-                        );
-                      } else {
-                        showSnackBar(context, "ERROR");
-                      }
-                    },
+                    onPressed: clickOnRegister(),
                     style: ButtonStyle(
                       // backgroundColor: MaterialStateProperty.all(BTNgreen),
-                      padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(12)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))),
                     ),
                     child: isLoading
-                        ?  const CircularProgressIndicator(
+                        ? const CircularProgressIndicator(
                             color: Color.fromARGB(255, 118, 118, 118),
                           )
-                        :  const Text(
+                        : const Text(
                             "Register",
                             style: TextStyle(fontSize: 19),
                           ),

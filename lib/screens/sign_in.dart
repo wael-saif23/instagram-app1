@@ -1,15 +1,15 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
- 
 
- 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
- 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insta_s_m_app/screens/register.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:insta_s_m_app/share/contants.dart';
 
+import '../firebase_servises/auth.dart';
+import '../share/snackbar.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -24,22 +24,20 @@ class _LoginState extends State<Login> {
   final passwordController = TextEditingController();
   bool isLoading = false;
 
-  // signIn() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-
-  //   try {
-  //     final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //         email: emailController.text, password: passwordController.text);
-  //   } on FirebaseAuthException catch (e) {
-  //     showSnackBar(context, "ERROR :  ${e.code} ");
-  //   }
-
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
+  signIn() async {
+    setState(() {
+      isLoading = true;
+    });
+    await AuthMethods().signIn(
+        emailll: emailController.text,
+        passworddd: passwordController.text,
+        context: context);
+    setState(() {
+      isLoading = false;
+    });
+    if (!mounted) return;
+    showSnackBar(context, "Logged in successfully.. ");
+  }
 
   @override
   void dispose() {
@@ -54,15 +52,14 @@ class _LoginState extends State<Login> {
     final double widthScreen = MediaQuery.of(context).size.width;
     // final googleSignInProvider = Provider.of<GoogleSignInProvider>(context);
     return Scaffold(
-      backgroundColor: mobileBackgroundColor,
+        backgroundColor: mobileBackgroundColor,
         appBar: AppBar(
           // backgroundColor: appbarGreen,
           title: Text("Sign in"),
         ),
-     
         body: Center(
             child: Padding(
-             padding: widthScreen > 600
+          padding: widthScreen > 600
               ? EdgeInsets.symmetric(horizontal: widthScreen * .3)
               : const EdgeInsets.all(33.0),
           child: SingleChildScrollView(
@@ -101,9 +98,7 @@ class _LoginState extends State<Login> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  // await signIn();
-                  // if (!mounted) return;
-                  // showSnackBar(context, "Done ... ");
+                  signIn();
                 },
                 style: ButtonStyle(
                   // backgroundColor: MaterialStateProperty.all(BTNgreen),
@@ -123,7 +118,6 @@ class _LoginState extends State<Login> {
               const SizedBox(
                 height: 9,
               ),
-            
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -145,8 +139,6 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-         
-           
             ]),
           ),
         )));

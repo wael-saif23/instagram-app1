@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:insta_s_m_app/share/colors.dart';
@@ -20,7 +21,9 @@ class _HomeState extends State<Home> {
       appBar:widthScreen>600?null: AppBar(
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: ()async {
+                await FirebaseAuth.instance.signOut();
+              },
               icon: const Icon(
                 Icons.messenger_outline,
               )),

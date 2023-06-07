@@ -14,6 +14,10 @@ import 'dart:io';
 
 import 'package:path/path.dart' show basename;
 
+import '../responsive/mopile.dart';
+import '../responsive/responsive.dart';
+import '../responsive/web.dart';
+
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
 
@@ -70,15 +74,15 @@ class _RegisterState extends State<Register> {
                   await uploadImage2Screen(ImageSource.camera);
                 },
                 child: Row(
-                  children: const[
-                     Icon(
+                  children: const [
+                    Icon(
                       Icons.camera,
                       size: 30,
                     ),
-                     SizedBox(
+                    SizedBox(
                       width: 11,
                     ),
-                     Text(
+                    Text(
                       "From Camera",
                       style: TextStyle(fontSize: 20),
                     )
@@ -137,7 +141,7 @@ class _RegisterState extends State<Register> {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Login()),
+        MaterialPageRoute(builder: (context) => const ResponsivePage(myMobileScreen: MopileScreen(), myWebScreen:WebScerren() ,)),
       );
     } else {
       showSnackBar(context, "ERROR");
@@ -282,7 +286,9 @@ class _RegisterState extends State<Register> {
                     height: 33,
                   ),
                   ElevatedButton(
-                    onPressed: clickOnRegister(),
+                    onPressed: () async{
+                     await clickOnRegister();
+                    },
                     style: ButtonStyle(
                       // backgroundColor: MaterialStateProperty.all(BTNgreen),
                       padding:

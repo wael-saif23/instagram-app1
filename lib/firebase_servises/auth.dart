@@ -56,4 +56,22 @@ class AuthMethods {
     }
     showSnackBar(context, message);
   }
+
+
+
+
+
+    signIn({required emailll,required passworddd, required context}) async {
+   
+
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailll, password: passworddd);
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, "ERROR :  ${e.code} ");
+    }
+
+    
+  }
+
 }

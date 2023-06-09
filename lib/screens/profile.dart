@@ -13,6 +13,8 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   Map userData = {};
   bool isloading = true;
+  int following = 0;
+  int followers = 0;
   getdata() async {
     try {
       setState(() {
@@ -26,6 +28,8 @@ class _ProfileState extends State<Profile> {
 
       userData = snapshot.data()!;
 
+      followers = userData["followers"].length;
+      following = userData["following"].length;
       setState(() {
         isloading = false;
       });
@@ -37,29 +41,30 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-   getdata();
-    
+    getdata();
   }
 
   @override
   Widget build(BuildContext context) {
     final double widthScreen = MediaQuery.of(context).size.width;
     return isloading
-        ? Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width*.1,
-            height: MediaQuery.of(context).size.height*.1,
-            child: const CircularProgressIndicator(
-                color: Color.fromARGB(255, 118, 118, 118),
-                
+        ? Scaffold(
+          backgroundColor: mobileBackgroundColor,
+          body: Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * .1,
+                height: MediaQuery.of(context).size.width * .1,
+                child: const CircularProgressIndicator(
+                  color: Color.fromARGB(255, 118, 118, 118),
+                ),
               ),
-          ),
+            ),
         )
         : Scaffold(
             backgroundColor: mobileBackgroundColor,
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
-              title:  Text(userData["username"]),
+              title: Text(userData["username"]),
             ),
             body: Column(
               children: [
@@ -72,7 +77,7 @@ class _ProfileState extends State<Profile> {
                         shape: BoxShape.circle,
                         color: Color.fromARGB(125, 78, 91, 110),
                       ),
-                      child:  CircleAvatar(
+                      child: CircleAvatar(
                         radius: 40,
                         backgroundImage: NetworkImage(
                             // widget.snap["profileImg"],
@@ -108,18 +113,18 @@ class _ProfileState extends State<Profile> {
                             width: 17,
                           ),
                           Column(
-                            children: const [
+                            children: [
                               Text(
-                                "8",
-                                style: TextStyle(
+                                followers.toString(),
+                                style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
-                              Text(
+                              const Text(
                                 "Followers",
                                 style: TextStyle(
                                     fontSize: 15,
@@ -132,18 +137,18 @@ class _ProfileState extends State<Profile> {
                             width: 17,
                           ),
                           Column(
-                            children: const [
+                            children: [
                               Text(
-                                "15",
-                                style: TextStyle(
+                                following.toString(),
+                                style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
-                              Text(
+                              const Text(
                                 "Following",
                                 style: TextStyle(
                                     fontSize: 15,
@@ -160,7 +165,7 @@ class _ProfileState extends State<Profile> {
                 Container(
                     margin: const EdgeInsets.fromLTRB(15, 21, 0, 0),
                     width: double.infinity,
-                    child:  Text(userData["tilte"])),
+                    child: Text(userData["tilte"])),
                 const SizedBox(
                   height: 15,
                 ),

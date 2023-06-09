@@ -5,6 +5,8 @@ class UserModel {
   String passworddd;
   String imgUrl;
   String uid;
+  List following;
+  List followers;
 
   UserModel({
     required this.emailll,
@@ -13,6 +15,8 @@ class UserModel {
     required this.username,
     required this.imgUrl,
     required this.uid,
+    required this.followers,
+    required this.following
   });
 
   Map<String, dynamic> convert2Map() {
@@ -23,6 +27,8 @@ class UserModel {
       "passworddd": passworddd,
       "imgUrl": imgUrl,
       "uid": uid,
+      "followers":[],
+      "following":[],
     };
   }
 }

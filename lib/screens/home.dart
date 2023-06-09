@@ -21,14 +21,16 @@ class _HomeState extends State<Home> {
       appBar:widthScreen>600?null: AppBar(
         actions: [
           IconButton(
-              onPressed: ()async {
-                await FirebaseAuth.instance.signOut();
+              onPressed: () {
+               
               },
               icon: const Icon(
                 Icons.messenger_outline,
               )),
           IconButton(
-              onPressed: () {},
+              onPressed: () async{
+                 await FirebaseAuth.instance.signOut();
+              },
               icon: const Icon(
                 Icons.logout,
               )),

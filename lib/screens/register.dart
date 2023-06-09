@@ -141,9 +141,18 @@ class _RegisterState extends State<Register> {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const ResponsivePage(myMobileScreen: MopileScreen(), myWebScreen:WebScerren() ,)),
+        MaterialPageRoute(
+            builder: (context) => const ResponsivePage(
+                  myMobileScreen: MopileScreen(),
+                  myWebScreen: WebScerren(),
+                )),
       );
-    } else {
+    } else if(imgName == null &&
+        imgPath == null){
+      showSnackBar(context, "Image Error");
+    }
+    
+    else {
       showSnackBar(context, "ERROR");
     }
   }
@@ -220,7 +229,7 @@ class _RegisterState extends State<Register> {
                   ),
                   TextFormField(
                       validator: (value) {
-                        return value!.isEmpty?"can not be empty": null;
+                        return value!.isEmpty ? "can not be empty" : null;
                       },
                       controller: usernameController,
                       keyboardType: TextInputType.text,
@@ -232,6 +241,9 @@ class _RegisterState extends State<Register> {
                     height: 22,
                   ),
                   TextFormField(
+                      validator: (value) {
+                        return value!.isEmpty ? "can not be empty" : null;
+                      },
                       controller: titleController,
                       keyboardType: TextInputType.text,
                       obscureText: false,
@@ -286,8 +298,8 @@ class _RegisterState extends State<Register> {
                     height: 33,
                   ),
                   ElevatedButton(
-                    onPressed: () async{
-                     await clickOnRegister();
+                    onPressed: () async {
+                      await clickOnRegister();
                     },
                     style: ButtonStyle(
                       // backgroundColor: MaterialStateProperty.all(BTNgreen),

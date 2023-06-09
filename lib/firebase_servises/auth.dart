@@ -38,6 +38,9 @@ class AuthMethods {
           username: username,
           imgUrl: imgUrl,
           uid: credential.user!.uid,
+          followers: [],
+          following: [],
+
           
           
           );

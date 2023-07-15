@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:insta_s_m_app/share/colors.dart';
@@ -17,6 +19,32 @@ class _AddPostState extends State<AddPost> {
   Uint8List? imgPath;
   String? imgName;
   bool isPosted = true;
+   Map userData = {};
+   bool isloading = true;
+
+     getdata() async {
+    try {
+      setState(() {
+        isloading = true;
+      });
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      userData = snapshot.data()!;
+
+      
+      setState(() {
+        isloading = false;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    
+  }
   uploadImage2Screen(ImageSource source) async {
     Navigator.pop(context);
     final XFile? pickedImg = await ImagePicker().pickImage(source: source);
@@ -127,10 +155,10 @@ class _AddPostState extends State<AddPost> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CircleAvatar(
+                     CircleAvatar(
                       radius: 33,
                       backgroundImage: NetworkImage(
-                          "https://static-ai.asianetnews.com/images/01e42s5h7kpdte5t1q9d0ygvf7/1-jpeg.jpg"),
+                          userData["imgUrl"]),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,

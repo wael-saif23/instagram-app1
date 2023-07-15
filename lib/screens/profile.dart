@@ -36,6 +36,8 @@ class _ProfileState extends State<Profile> {
     } catch (e) {
       print(e.toString());
     }
+
+  
   }
 
   @override
@@ -49,8 +51,8 @@ class _ProfileState extends State<Profile> {
     final double widthScreen = MediaQuery.of(context).size.width;
     return isloading
         ? Scaffold(
-          backgroundColor: mobileBackgroundColor,
-          body: Center(
+            backgroundColor: mobileBackgroundColor,
+            body: Center(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * .1,
                 height: MediaQuery.of(context).size.width * .1,
@@ -59,7 +61,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-        )
+          )
         : Scaffold(
             backgroundColor: mobileBackgroundColor,
             appBar: AppBar(

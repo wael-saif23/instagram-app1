@@ -165,7 +165,7 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
                 Container(
-                    margin: const EdgeInsets.fromLTRB(15, 21, 0, 0),
+                    margin: const EdgeInsets.fromLTRB(50, 21, 0, 0),
                     width: double.infinity,
                     child: Text(userData["tilte"])),
                 const SizedBox(

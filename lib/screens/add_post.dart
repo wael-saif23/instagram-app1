@@ -19,10 +19,10 @@ class _AddPostState extends State<AddPost> {
   Uint8List? imgPath;
   String? imgName;
   bool isPosted = true;
-   Map userData = {};
-   bool isloading = true;
+  Map userData = {};
+  bool isloading = true;
 
-     getdata() async {
+  getdata() async {
     try {
       setState(() {
         isloading = true;
@@ -35,16 +35,14 @@ class _AddPostState extends State<AddPost> {
 
       userData = snapshot.data()!;
 
-      
       setState(() {
         isloading = false;
       });
     } catch (e) {
       print(e.toString());
     }
-
-    
   }
+
   uploadImage2Screen(ImageSource source) async {
     Navigator.pop(context);
     final XFile? pickedImg = await ImagePicker().pickImage(source: source);
@@ -66,73 +64,91 @@ class _AddPostState extends State<AddPost> {
   }
 
   showmodel() {
-    return showModalBottomSheet(
+    return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(22),
-          height: 170,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () async {
-                  await uploadImage2Screen(ImageSource.camera);
-                },
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.camera,
-                      size: 30,
-                    ),
-                    SizedBox(
-                      width: 11,
-                    ),
-                    Text(
-                      "From Camera",
-                      style: TextStyle(fontSize: 20),
-                    )
-                  ],
-                ),
+        return SimpleDialog(
+          children: [
+            SimpleDialogOption(
+              onPressed: () async {
+                await uploadImage2Screen(ImageSource.camera);
+              },
+              padding: const EdgeInsets.all(22),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.camera,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 11,
+                  ),
+                  Text(
+                    "From Camera",
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
               ),
-              const SizedBox(
-                height: 22,
+            ),
+            SimpleDialogOption(
+              onPressed: () async {
+                uploadImage2Screen(ImageSource.gallery);
+              },
+              padding: const EdgeInsets.all(22),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.photo_album,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 11,
+                  ),
+                  Text(
+                    "From Gallery",
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
               ),
-              GestureDetector(
-                onTap: () {
-                  uploadImage2Screen(ImageSource.gallery);
-                },
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.photo_outlined,
-                      size: 30,
-                    ),
-                    SizedBox(
-                      width: 11,
-                    ),
-                    Text(
-                      "From Gallery",
-                      style: TextStyle(fontSize: 20),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
   }
 
   @override
+  void initState() {
+    super.initState();
+    getdata();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return isPosted? Scaffold(
+    return imgPath == null
+        ? Scaffold(
+            backgroundColor: mobileBackgroundColor,
+            body: Center(
+              child: IconButton(
+                  onPressed: () {
+                    showmodel();
+                  },
+                  icon: const Icon(
+                    Icons.upload,
+                    size: 55,
+                  )),
+            ),
+          )
+        : Scaffold(
             backgroundColor: mobileBackgroundColor,
             appBar: AppBar(
               actions: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        isPosted = false;
+                      });
+                    },
                     child: const Text(
                       "Post",
                       style: TextStyle(
@@ -143,22 +159,31 @@ class _AddPostState extends State<AddPost> {
               ],
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+                  onPressed: () {
+                    setState(() {
+                      imgPath = null;
+                    });
+                  },
+                  icon: const Icon(Icons.arrow_back)),
             ),
             body: Column(
               children: [
-                const Divider(
-                  thickness: 1,
-                  height: 30,
-                ),
+                isPosted
+                    ? const Divider(
+                        thickness: 1,
+                        height: 30,
+                      )
+                    : const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: LinearProgressIndicator(),
+                      ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     CircleAvatar(
+                    CircleAvatar(
                       radius: 33,
-                      backgroundImage: NetworkImage(
-                          userData["imgUrl"]),
+                      backgroundImage: NetworkImage(userData["imgUrl"] ?? ""),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
@@ -171,35 +196,16 @@ class _AddPostState extends State<AddPost> {
                       ),
                     ),
                     Container(
-                      width: 66,
-                      height: 74,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                        "https://cdn1-m.alittihad.ae/store/archive/image/2021/10/22/6266a092-72dd-4a2f-82a4-d22ed9d2cc59.jpg?width=1300",
-                      )
-
-                              // image: MemoryImage(imgPath!), fit: BoxFit.cover
-                              //
-                              //
-                              )),
-                    )
+                        width: 66,
+                        height: 74,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: MemoryImage(imgPath!),
+                                fit: BoxFit.cover))),
                   ],
                 ),
               ],
             ),
-    ) : Scaffold(
-      backgroundColor: mobileBackgroundColor,
-      body: Center(
-        child: IconButton(
-            onPressed: () {
-              showmodel();
-            },
-            icon: const Icon(
-              Icons.upload,
-              size: 55,
-            )),
-      ),
-    );
+          );
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_s_m_app/provider/user_provider.dart';
 import 'package:insta_s_m_app/responsive/mopile.dart';
 import 'package:insta_s_m_app/responsive/responsive.dart';
 import 'package:insta_s_m_app/responsive/web.dart';
@@ -9,6 +10,7 @@ import 'package:insta_s_m_app/screens/home.dart';
 import 'package:insta_s_m_app/screens/register.dart';
 import 'package:insta_s_m_app/screens/sign_in.dart';
 import 'package:insta_s_m_app/share/snackbar.dart';
+import 'package:provider/provider.dart';
   void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     if (kIsWeb) {
@@ -31,19 +33,22 @@ class MyApp extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      theme: ThemeData.dark(),
-      debugShowCheckedModeBanner: false,
-      home:   StreamBuilder(
-    stream: FirebaseAuth.instance.authStateChanges(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {return const Center(child: CircularProgressIndicator(color: Colors.white,));} 
-      else if (snapshot.hasError) {return showSnackBar(context, "Something went wrong");}
-      else if (snapshot.hasData) {return const ResponsivePage(myMobileScreen: MopileScreen(), myWebScreen:WebScerren() ,);}
-      else { return const Login();}
-    },
- ),
-      // home:const ResponsivePage(myMobileScreen: MopileScreen(), myWebScreen:WebScerren() ,)
+    return  ChangeNotifierProvider(
+      create: (context) {return UserProvider();},
+      child: MaterialApp(
+        theme: ThemeData.dark(),
+        debugShowCheckedModeBanner: false,
+        home:   StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {return const Center(child: CircularProgressIndicator(color: Colors.white,));} 
+        else if (snapshot.hasError) {return showSnackBar(context, "Something went wrong");}
+        else if (snapshot.hasData) {return const ResponsivePage(myMobileScreen: MopileScreen(), myWebScreen:WebScerren() ,);}
+        else { return const Login();}
+      },
+     ),
+       
+      ),
     );
   }
 }

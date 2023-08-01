@@ -5,8 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:insta_s_m_app/provider/user_provider.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:path/path.dart' show basename;
+import 'package:provider/provider.dart';
 
 class AddPost extends StatefulWidget {
   const AddPost({Key? key}) : super(key: key);
@@ -125,6 +127,7 @@ class _AddPostState extends State<AddPost> {
 
   @override
   Widget build(BuildContext context) {
+    final allDataFromDB = Provider.of<UserProvider>(context).getUser;
     return imgPath == null
         ? Scaffold(
             backgroundColor: mobileBackgroundColor,
@@ -187,7 +190,7 @@ class _AddPostState extends State<AddPost> {
                       backgroundColor: secondaryColor,
                       child: CircleAvatar(
                         radius: 33,
-                        backgroundImage: NetworkImage(userData["imgUrl"] ?? ""),
+                        backgroundImage: NetworkImage(allDataFromDB!.imgUrl),
                       ),
                     ),
                     SizedBox(

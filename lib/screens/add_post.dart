@@ -74,8 +74,8 @@ class _AddPostState extends State<AddPost> {
                 await uploadImage2Screen(ImageSource.camera);
               },
               padding: const EdgeInsets.all(22),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.camera,
                     size: 30,
@@ -95,8 +95,8 @@ class _AddPostState extends State<AddPost> {
                 uploadImage2Screen(ImageSource.gallery);
               },
               padding: const EdgeInsets.all(22),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.photo_album,
                     size: 30,
@@ -147,6 +147,7 @@ class _AddPostState extends State<AddPost> {
                     onPressed: () {
                       setState(() {
                         isPosted = false;
+                        imgPath = null;
                       });
                     },
                     child: const Text(
@@ -182,8 +183,12 @@ class _AddPostState extends State<AddPost> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      radius: 33,
-                      backgroundImage: NetworkImage(userData["imgUrl"] ?? ""),
+                      radius: 35,
+                      backgroundColor: secondaryColor,
+                      child: CircleAvatar(
+                        radius: 33,
+                        backgroundImage: NetworkImage(userData["imgUrl"] ?? ""),
+                      ),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,

@@ -5,8 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:insta_s_m_app/firebase_servises/firestore.dart';
 import 'package:insta_s_m_app/provider/user_provider.dart';
 import 'package:insta_s_m_app/share/colors.dart';
+import 'package:insta_s_m_app/share/snackbar.dart';
 import 'package:path/path.dart' show basename;
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,7 @@ class AddPost extends StatefulWidget {
 }
 
 class _AddPostState extends State<AddPost> {
+  final desController = TextEditingController();
   Uint8List? imgPath;
   String? imgName;
   bool isPosted = true;
@@ -125,6 +128,38 @@ class _AddPostState extends State<AddPost> {
     getdata();
   }
 
+  clickOnPost({required String imgUrl,required String username, }) async {
+    
+    if (imgName != null && imgPath != null) {
+      setState(() {
+        isPosted = false;
+      });
+      await FirestoreMethods().uploadPost(
+          imgName: imgName,
+          imgPath: imgPath,
+          description: desController.text,
+          profileImg: imgUrl,
+          username: username,
+          context: context);
+      setState(() {
+        isPosted = true;
+        imgPath = null;
+      });
+    } else if (imgName == null && imgPath == null) {
+      showSnackBar(context, "Image Error");
+    } else {
+      showSnackBar(context, "ERROR");
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    desController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final allDataFromDB = Provider.of<UserProvider>(context).getUser;
@@ -148,10 +183,9 @@ class _AddPostState extends State<AddPost> {
               actions: [
                 TextButton(
                     onPressed: () {
-                      setState(() {
-                        isPosted = false;
-                        imgPath = null;
-                      });
+                      
+                    
+                      clickOnPost(imgUrl: allDataFromDB!.imgUrl, username:allDataFromDB.username);
                     },
                     child: const Text(
                       "Post",
@@ -195,10 +229,10 @@ class _AddPostState extends State<AddPost> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
-                      child: const TextField(
-                        // controller: descriptionController,
+                      child: TextField(
+                        controller: desController,
                         maxLines: 8,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             hintText: "write a caption...",
                             border: InputBorder.none),
                       ),

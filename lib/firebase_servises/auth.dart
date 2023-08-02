@@ -26,7 +26,7 @@ class AuthMethods {
       );
       message = "ERROR => Registered only";
 
-      String imgUrl =await getImgURL(imgName: imgName, imgPath: imgPath);
+      String imgUrl =await getImgURL(imgName: imgName, imgPath: imgPath, folderName: 'UserFolerImage');
 
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');

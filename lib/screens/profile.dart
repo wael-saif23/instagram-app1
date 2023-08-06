@@ -15,6 +15,7 @@ class _ProfileState extends State<Profile> {
   bool isloading = true;
   int following = 0;
   int followers = 0;
+  int postsnumber = 0;
   getdata() async {
     try {
       setState(() {
@@ -30,14 +31,13 @@ class _ProfileState extends State<Profile> {
 
       followers = userData["followers"].length;
       following = userData["following"].length;
+      
       setState(() {
         isloading = false;
       });
     } catch (e) {
       print(e.toString());
     }
-
-  
   }
 
   @override
@@ -247,33 +247,55 @@ class _ProfileState extends State<Profile> {
                 const SizedBox(
                   height: 19,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: widthScreen > 600
-                        ? const EdgeInsets.all(66.0)
-                        : const EdgeInsets.all(3.0),
-                    child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 3 / 2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10),
-                        itemCount: 3,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: Image.network(
-                              "https://cdn1-m.alittihad.ae/store/archive/image/2021/10/22/6266a092-72dd-4a2f-82a4-d22ed9d2cc59.jpg?width=1300",
-                              // height: 333,
-                              // width: 100,
+                FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  future: FirebaseFirestore.instance
+                      .collection('posts')
+                      .where("uid",
+                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                      .get(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.hasError) {
+                      return Text("Something went wrong");
+                    }
 
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        }),
-                  ),
-                ),
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Expanded(
+                        child: Padding(
+                          padding: widthScreen > 600
+                              ? const EdgeInsets.all(66.0)
+                              : const EdgeInsets.all(3.0),
+                          child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 3 / 2,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10),
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: Image.network(
+                                    snapshot.data!.docs[index]["imgPost"],
+                                    // height: 333,
+                                    // width: 100,
+
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              }),
+                        ),
+                      );
+                    }
+
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ));
+                  },
+                )
               ],
             ),
           );

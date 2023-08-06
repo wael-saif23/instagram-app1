@@ -11,6 +11,7 @@ import 'package:insta_s_m_app/screens/register.dart';
 import 'package:insta_s_m_app/screens/sign_in.dart';
 import 'package:insta_s_m_app/share/snackbar.dart';
 import 'package:provider/provider.dart';
+
   void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     if (kIsWeb) {

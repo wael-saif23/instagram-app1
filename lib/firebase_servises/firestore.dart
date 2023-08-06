@@ -55,10 +55,4 @@ class FirestoreMethods {
     }
     showSnackBar(context, message);
   }
-
-
-   Future<PostsModel> getPostsDetails() async {
-   DocumentSnapshot snap = await FirebaseFirestore.instance.collection('posts').doc(FirebaseAuth.instance.currentUser!.uid).get(); 
-   return PostsModel.convertSnap2Model(snap);
- }
 }

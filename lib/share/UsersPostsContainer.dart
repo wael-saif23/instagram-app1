@@ -39,8 +39,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                       child: CircleAvatar(
                         radius: 36,
                         backgroundImage: NetworkImage(
-                            // widget.snap["profileImg"],
-                            // "https://i.pinimg.com/564x/d8/c5/6a/d8c56a664bc9a28d7e32b01a71884af2.jpg"
+                            
                             widget.data["profileImg"],
                             ),
                       ),
@@ -49,7 +48,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                       width: 17,
                     ),
                     Text(
-                      // widget.snap["username"],
+                      
                       widget.data["username"],
                       style: TextStyle(fontSize: 15),
                     ),
@@ -60,7 +59,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
             ),
           ),
           Image.network(
-            // widget.snap["postUrl"],
+            
             widget.data["imgPost"],
             fit: BoxFit.cover,
             height: MediaQuery.of(context).size.height * 0.35,

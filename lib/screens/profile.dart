@@ -12,6 +12,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Map userData = {};
+  Map postsData = {};
   bool isloading = true;
   int following = 0;
   int followers = 0;
@@ -27,11 +28,18 @@ class _ProfileState extends State<Profile> {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
 
+      QuerySnapshot<Map<String, dynamic>> postsSnapshot =
+          await FirebaseFirestore.instance
+              .collection('posts')
+              .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              .get();
+      DocumentSnapshot<Map<String, dynamic>> postsData = postsSnapshot.docs.length;
       userData = snapshot.data()!;
 
+      postsnumber = postsData;
       followers = userData["followers"].length;
       following = userData["following"].length;
-      
+
       setState(() {
         isloading = false;
       });
@@ -91,18 +99,20 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Column(
-                            children: const [
+                            children: [
                               Text(
-                                "1",
-                                style: TextStyle(
+                                "0"
+                                // postsnumber.toString()
+                                ,
+                                style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
-                              Text(
+                              const Text(
                                 "Posts",
                                 style: TextStyle(
                                     fontSize: 15,

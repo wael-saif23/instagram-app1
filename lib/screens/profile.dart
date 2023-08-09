@@ -12,7 +12,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Map userData = {};
-  Map postsData = {};
+  
   bool isloading = true;
   int following = 0;
   int followers = 0;
@@ -28,15 +28,17 @@ class _ProfileState extends State<Profile> {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
 
-      QuerySnapshot<Map<String, dynamic>> postsSnapshot =
+      
+      userData = snapshot.data()!;
+
+
+QuerySnapshot<Map<String, dynamic>> postsSnapshot =
           await FirebaseFirestore.instance
               .collection('posts')
               .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
               .get();
-      DocumentSnapshot<Map<String, dynamic>> postsData = postsSnapshot.docs.length;
-      userData = snapshot.data()!;
-
-      postsnumber = postsData;
+      postsnumber = postsSnapshot.docs.length;
+       
       followers = userData["followers"].length;
       following = userData["following"].length;
 
@@ -101,8 +103,7 @@ class _ProfileState extends State<Profile> {
                           Column(
                             children: [
                               Text(
-                                "0"
-                                // postsnumber.toString()
+                                postsnumber.toString()
                                 ,
                                 style: const TextStyle(
                                   fontSize: 22,

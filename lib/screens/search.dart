@@ -1,6 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/share/colors.dart';
-
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -10,17 +12,78 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  final myController = TextEditingController();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Start listening to changes.
+  //   myController.addListener(showUser);
+  // }
+
+  // showUser() {
+  //   setState(() {});
+  // }
+
+  @override
+  void dispose() {
+    myController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: mobileBackgroundColor,
-      appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
-        title: TextFormField(
+        appBar: AppBar(
+          backgroundColor: mobileBackgroundColor,
+          title: TextFormField(
+            onChanged: (value) {
+              setState(() {
+              });
+            },
+            controller: myController,
             decoration:
                 const InputDecoration(labelText: 'Search for a user...'),
           ),
-      ),
-    );
+        ),
+        body: FutureBuilder(
+          future: FirebaseFirestore.instance
+              .collection('users')
+              .where("username", isGreaterThanOrEqualTo: myController.text
+              )
+              .get(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text("Something went wrong");
+            }
+
+            if (snapshot.connectionState == ConnectionState.done) {
+              return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        onTap: () {},
+                        title: Text(snapshot.data!.docs[index]["username"]),
+                        leading: CircleAvatar(
+                          radius: 33,
+                          backgroundImage: NetworkImage(
+                              // "https://i.pinimg.com/564x/94/df/a7/94dfa775f1bad7d81aa9898323f6f359.jpg"
+                              snapshot.data!.docs[index]["imgUrl"]),
+                        ),
+                      ),
+                    );
+                  });
+            }
+
+            return Center(
+                child: CircularProgressIndicator(
+              color: Colors.white,
+            ));
+          },
+        ));
   }
 }

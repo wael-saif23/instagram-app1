@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/screens/add_post.dart';
@@ -72,12 +73,12 @@ class _MopileScreenState extends State<MopileScreen> {
         controller: _pageController,
         onPageChanged: (index) {},
         physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          Home(),
-          Search(),
-          AddPost(),
-          Center(child: Text("My favorite")),
-          Profile(),
+        children:  [
+          const Home(),
+          const Search(),
+          const AddPost(),
+          const Center(child: Text("My favorite")),
+          Profile(userUid: FirebaseAuth.instance.currentUser!.uid,),
         ],
       ),
     );

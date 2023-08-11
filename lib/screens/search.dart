@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_s_m_app/screens/profile.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 
 class Search extends StatefulWidget {
@@ -40,8 +41,7 @@ class _SearchState extends State<Search> {
           backgroundColor: mobileBackgroundColor,
           title: TextFormField(
             onChanged: (value) {
-              setState(() {
-              });
+              setState(() {});
             },
             controller: myController,
             decoration:
@@ -51,8 +51,7 @@ class _SearchState extends State<Search> {
         body: FutureBuilder(
           future: FirebaseFirestore.instance
               .collection('users')
-              .where("username", isGreaterThanOrEqualTo: myController.text
-              )
+              .where("username", isEqualTo: myController.text)
               .get(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
@@ -66,7 +65,13 @@ class _SearchState extends State<Search> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>  Profile(userUid: snapshot.data!.docs[index]["uid"],),),
+                          );
+                        },
                         title: Text(snapshot.data!.docs[index]["username"]),
                         leading: CircleAvatar(
                           radius: 33,

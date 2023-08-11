@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  final String userUid;
+  const Profile({Key? key , required this.userUid}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -12,7 +13,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Map userData = {};
-  
+
   bool isloading = true;
   int following = 0;
   int followers = 0;
@@ -25,20 +26,18 @@ class _ProfileState extends State<Profile> {
       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
           .instance
           .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(widget.userUid)
           .get();
 
-      
       userData = snapshot.data()!;
 
-
-QuerySnapshot<Map<String, dynamic>> postsSnapshot =
+      QuerySnapshot<Map<String, dynamic>> postsSnapshot =
           await FirebaseFirestore.instance
               .collection('posts')
-              .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              .where("uid", isEqualTo: widget.userUid)
               .get();
       postsnumber = postsSnapshot.docs.length;
-       
+
       followers = userData["followers"].length;
       following = userData["following"].length;
 
@@ -103,8 +102,7 @@ QuerySnapshot<Map<String, dynamic>> postsSnapshot =
                           Column(
                             children: [
                               Text(
-                                postsnumber.toString()
-                                ,
+                                postsnumber.toString(),
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -189,6 +187,8 @@ QuerySnapshot<Map<String, dynamic>> postsSnapshot =
                 const SizedBox(
                   height: 9,
                 ),
+
+widget.userUid==FirebaseAuth.instance.currentUser!.uid?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -247,7 +247,31 @@ QuerySnapshot<Map<String, dynamic>> postsSnapshot =
                       ),
                     ),
                   ],
-                ),
+                )
+               : Center(
+                  child: ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add,
+                        size: 24.0,
+                      ),
+                      label: const Text(
+                        "Follow",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            const Color.fromARGB(225, 24, 177, 238)),
+                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                            vertical: widthScreen > 600 ? 19 : 10,
+                            horizontal: 33)),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                        ),
+                      ),
+                    ),),
                 const SizedBox(
                   height: 9,
                 ),
@@ -262,7 +286,7 @@ QuerySnapshot<Map<String, dynamic>> postsSnapshot =
                   future: FirebaseFirestore.instance
                       .collection('posts')
                       .where("uid",
-                          isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                          isEqualTo: widget.userUid)
                       .get(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>

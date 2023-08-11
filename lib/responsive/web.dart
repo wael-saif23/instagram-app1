@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insta_s_m_app/screens/add_post.dart';
@@ -103,12 +104,12 @@ class _WebScerrenState extends State<WebScerren> {
         },
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
-        children: const [
+        children:  [
           Home(),
           Search(),
           AddPost(),
           Center(child: Text("Love u ♥")),
-          Profile(),
+          Profile(userUid: FirebaseAuth.instance.currentUser!.uid,),
         ],
       ),
     );

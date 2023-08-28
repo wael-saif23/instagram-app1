@@ -5,7 +5,7 @@ import 'package:insta_s_m_app/share/UsersPostsContainer.dart';
 
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
+
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

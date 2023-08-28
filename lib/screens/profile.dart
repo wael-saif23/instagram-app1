@@ -5,7 +5,7 @@ import 'package:insta_s_m_app/share/colors.dart';
 
 class Profile extends StatefulWidget {
   final String userUid;
-  const Profile({Key? key , required this.userUid}) : super(key: key);
+  const Profile({Key? key, required this.userUid}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -18,6 +18,7 @@ class _ProfileState extends State<Profile> {
   int following = 0;
   int followers = 0;
   int postsnumber = 0;
+  bool isFollowing = false;
   getdata() async {
     try {
       setState(() {
@@ -187,91 +188,121 @@ class _ProfileState extends State<Profile> {
                 const SizedBox(
                   height: 9,
                 ),
-
-widget.userUid==FirebaseAuth.instance.currentUser!.uid?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.edit,
-                        color: Colors.grey,
-                        size: 24.0,
-                      ),
-                      label: const Text(
-                        "Edit profile",
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            const Color.fromARGB(0, 90, 103, 223)),
-                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                            vertical: widthScreen > 600 ? 19 : 10,
-                            horizontal: 33)),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7),
-                            side: const BorderSide(
-                                color: Color.fromARGB(109, 255, 255, 255),
-                                // width: 1,
-                                style: BorderStyle.solid),
+                widget.userUid == FirebaseAuth.instance.currentUser!.uid
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.grey,
+                              size: 24.0,
+                            ),
+                            label: const Text(
+                              "Edit profile",
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromARGB(0, 90, 103, 223)),
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.symmetric(
+                                      vertical: widthScreen > 600 ? 19 : 10,
+                                      horizontal: 33)),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7),
+                                  side: const BorderSide(
+                                      color: Color.fromARGB(109, 255, 255, 255),
+                                      // width: 1,
+                                      style: BorderStyle.solid),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.logout,
-                        size: 24.0,
-                      ),
-                      label: const Text(
-                        "Log out",
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            const Color.fromARGB(143, 255, 55, 112)),
-                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                            vertical: widthScreen > 600 ? 19 : 10,
-                            horizontal: 33)),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7),
+                          const SizedBox(
+                            width: 15,
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-               : Center(
-                  child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.add,
-                        size: 24.0,
-                      ),
-                      label: const Text(
-                        "Follow",
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            const Color.fromARGB(225, 24, 177, 238)),
-                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                            vertical: widthScreen > 600 ? 19 : 10,
-                            horizontal: 33)),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7),
+                          ElevatedButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.logout,
+                              size: 24.0,
+                            ),
+                            label: const Text(
+                              "Log out",
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color.fromARGB(143, 255, 55, 112)),
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.symmetric(
+                                      vertical: widthScreen > 600 ? 19 : 10,
+                                      horizontal: 33)),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
+                      )
+                    : Center(
+                        child: isFollowing
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isFollowing = false;
+                                    followers = followers - 1;
+                                  });
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color.fromARGB(224, 197, 77, 127)),
+                                  padding: MaterialStateProperty.all(
+                                      EdgeInsets.symmetric(
+                                          vertical: widthScreen > 600 ? 19 : 10,
+                                          horizontal: 33)),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "unfollow",
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              )
+                            : ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isFollowing = true;
+                                    followers = followers + 1;
+                                  });
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color.fromARGB(225, 24, 177, 238)),
+                                  padding: MaterialStateProperty.all(
+                                      EdgeInsets.symmetric(
+                                          vertical: widthScreen > 600 ? 19 : 10,
+                                          horizontal: 33)),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Follow",
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ),
                       ),
-                    ),),
                 const SizedBox(
                   height: 9,
                 ),
@@ -285,14 +316,13 @@ widget.userUid==FirebaseAuth.instance.currentUser!.uid?
                 FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
                   future: FirebaseFirestore.instance
                       .collection('posts')
-                      .where("uid",
-                          isEqualTo: widget.userUid)
+                      .where("uid", isEqualTo: widget.userUid)
                       .get(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                           snapshot) {
                     if (snapshot.hasError) {
-                      return Text("Something went wrong");
+                      return const Text("Something went wrong");
                     }
 
                     if (snapshot.connectionState == ConnectionState.done) {

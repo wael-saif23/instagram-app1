@@ -42,6 +42,9 @@ class _ProfileState extends State<Profile> {
       followers = userData["followers"].length;
       following = userData["following"].length;
 
+      isFollowing = userData["followers"]
+          .contains(FirebaseAuth.instance.currentUser!.uid);
+
       setState(() {
         isloading = false;
       });
@@ -253,10 +256,28 @@ class _ProfileState extends State<Profile> {
                     : Center(
                         child: isFollowing
                             ? ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   setState(() {
                                     isFollowing = false;
                                     followers = followers - 1;
+                                  });
+
+                                  await FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(widget.userUid)
+                                      .update({
+                                    "followers": FieldValue.arrayRemove([
+                                      FirebaseAuth.instance.currentUser!.uid
+                                    ])
+                                  });
+
+                                  await FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                      .update({
+                                    "following":
+                                        FieldValue.arrayRemove([widget.userUid])
                                   });
                                 },
                                 style: ButtonStyle(
@@ -278,10 +299,28 @@ class _ProfileState extends State<Profile> {
                                 ),
                               )
                             : ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   setState(() {
                                     isFollowing = true;
                                     followers = followers + 1;
+                                  });
+
+                                  await FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(widget.userUid)
+                                      .update({
+                                    "followers": FieldValue.arrayUnion([
+                                      FirebaseAuth.instance.currentUser!.uid
+                                    ])
+                                  });
+
+                                  await FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                      .update({
+                                    "following":
+                                        FieldValue.arrayUnion([widget.userUid])
                                   });
                                 },
                                 style: ButtonStyle(

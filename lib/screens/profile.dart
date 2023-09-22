@@ -12,13 +12,13 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  Map userData = {};
+  late Map userData ;
 
-  bool isloading = true;
-  int following = 0;
-  int followers = 0;
-  int postsnumber = 0;
-  bool isFollowing = false;
+  late bool isloading ;
+  late int following ;
+  late int followers ;
+  late int postsnumber ;
+  late bool isFollowing ;
   getdata() async {
     try {
       setState(() {

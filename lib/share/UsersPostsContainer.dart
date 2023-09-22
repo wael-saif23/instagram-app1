@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:intl/intl.dart';
 
+import '../screens/comments.dart';
+
 
 
 
@@ -77,7 +79,12 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                       icon: const Icon(Icons.favorite_border),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) =>const CommentsScreen()),
+                          );
+                      },
                       icon: const Icon(
                         Icons.comment_outlined,
                       ),

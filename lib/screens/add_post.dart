@@ -79,8 +79,8 @@ class _AddPostState extends State<AddPost> {
                 await uploadImage2Screen(ImageSource.camera);
               },
               padding: const EdgeInsets.all(22),
-              child: const Row(
-                children: [
+              child:  Row(
+                children:const [
                   Icon(
                     Icons.camera,
                     size: 30,
@@ -100,8 +100,8 @@ class _AddPostState extends State<AddPost> {
                 uploadImage2Screen(ImageSource.gallery);
               },
               padding: const EdgeInsets.all(22),
-              child: const Row(
-                children: [
+              child:  Row(
+                children:const [
                   Icon(
                     Icons.photo_album,
                     size: 30,

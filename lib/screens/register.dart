@@ -10,8 +10,6 @@ import 'package:insta_s_m_app/share/colors.dart';
 import 'package:insta_s_m_app/share/contants.dart';
 import 'package:insta_s_m_app/share/snackbar.dart';
 
-import 'dart:io';
-
 import 'package:path/path.dart' show basename;
 
 import '../responsive/mopile.dart';
@@ -147,12 +145,9 @@ class _RegisterState extends State<Register> {
                   myWebScreen: WebScerren(),
                 )),
       );
-    } else if(imgName == null &&
-        imgPath == null){
+    } else if (imgName == null && imgPath == null) {
       showSnackBar(context, "Image Error");
-    }
-    
-    else {
+    } else {
       showSnackBar(context, "ERROR");
     }
   }

@@ -55,4 +55,39 @@ class FirestoreMethods {
     }
     showSnackBar(context, message);
   }
+
+  uploadComments(
+      {required postId,
+      required profilePic,
+      required username,
+      required textComment,
+      required uid,
+      required context}) async {
+    String message = "ERROR => Not starting the code";
+
+    try {
+      if (textComment.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await FirebaseFirestore.instance
+            .collection('posts')
+            .doc(postId)
+            .collection("comments")
+            .doc(commentId)
+            .set({
+          "profilePic": profilePic,
+          "username": username,
+          "textComment": textComment,
+          "dataPublished": DateTime.now(),
+          "uid": uid,
+          "commentId": commentId,
+        });
+        message = " your Commend successfully posted ♥ ♥";
+      }
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, "ERROR :  ${e.code} ");
+    } catch (e) {
+      print(e);
+    }
+    showSnackBar(context, message);
+  }
 }

@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insta_s_m_app/screens/register.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:insta_s_m_app/share/contants.dart';

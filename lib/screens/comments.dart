@@ -6,6 +6,7 @@ import 'package:insta_s_m_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../firebase_servises/firestore.dart';
 import '../share/colors.dart';
 import '../share/contants.dart';
 
@@ -113,20 +114,14 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           hintText: "Comment as  Carvel  ",
                           suffixIcon: IconButton(
                               onPressed: () async {
-                                String commentId = const Uuid().v1();
-                                await FirebaseFirestore.instance
-                                    .collection('posts')
-                                    .doc(widget.userData["postId"])
-                                    .collection("comments")
-                                    .doc(commentId)
-                                    .set({
-                                  "profilePic": userData!.imgUrl,
-                                  "username": userData.username,
-                                  "textComment": commentController.text,
-                                  "dataPublished": DateTime.now(),
-                                  "uid": userData.uid,
-                                  "commentId": commentId
-                                });
+                                FirestoreMethods().uploadComments(
+                                    postId: widget.userData["postId"],
+                                    profilePic: userData!.imgUrl,
+                                    username: userData.username,
+                                    textComment: commentController.text,
+                                    uid: userData.uid,
+                                    context: context);
+
                                 commentController.clear();
                               },
                               icon: Icon(Icons.send)))),

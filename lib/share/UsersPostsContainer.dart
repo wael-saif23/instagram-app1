@@ -4,18 +4,14 @@ import 'package:intl/intl.dart';
 
 import '../screens/comments.dart';
 
-
-
-
 class UsersPostsContainer extends StatefulWidget {
   const UsersPostsContainer({super.key, required this.data});
-    final Map<String, dynamic> data;
+  final Map<String, dynamic> data;
   @override
   State<UsersPostsContainer> createState() => _UsersPostsContainerState();
 }
 
 class _UsersPostsContainerState extends State<UsersPostsContainer> {
- 
   @override
   Widget build(BuildContext context) {
     final double widthScreen = MediaQuery.of(context).size.width;
@@ -33,7 +29,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Row(
+                Row(
                   children: [
                     CircleAvatar(
                       radius: 38,
@@ -41,16 +37,14 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                       child: CircleAvatar(
                         radius: 36,
                         backgroundImage: NetworkImage(
-                            
-                            widget.data["profileImg"],
-                            ),
+                          widget.data["profileImg"],
+                        ),
                       ),
                     ),
                     SizedBox(
                       width: 17,
                     ),
                     Text(
-                      
                       widget.data["username"],
                       style: TextStyle(fontSize: 15),
                     ),
@@ -61,7 +55,6 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
             ),
           ),
           Image.network(
-            
             widget.data["imgPost"],
             fit: BoxFit.cover,
             height: MediaQuery.of(context).size.height * 0.35,
@@ -80,10 +73,13 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                     ),
                     IconButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) =>const CommentsScreen()),
-                          );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CommentsScreen(
+                                    userData: widget.data,
+                                  )),
+                        );
                       },
                       icon: const Icon(
                         Icons.comment_outlined,
@@ -107,13 +103,13 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
           Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 0, 10),
               width: double.infinity,
-              child:  Text(
-                "${widget.data["likes"].length}  ${widget.data["likes"].length >1? "Likes" : "like"} ",
+              child: Text(
+                "${widget.data["likes"].length}  ${widget.data["likes"].length > 1 ? "Likes" : "like"} ",
                 textAlign: TextAlign.start,
                 style: TextStyle(
                     fontSize: 18, color: Color.fromARGB(214, 157, 157, 165)),
               )),
-           Row(
+          Row(
             children: [
               SizedBox(
                 width: 9,
@@ -152,8 +148,9 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
           Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 9, 10),
               width: double.infinity,
-              child:  Text(
-                 DateFormat('MMMM ,d,y').format(widget.data["datePublished"].toDate()),
+              child: Text(
+                DateFormat('MMMM ,d,y')
+                    .format(widget.data["datePublished"].toDate()),
                 // widget.data["datePublished"],
                 style: TextStyle(
                     fontSize: 18, color: Color.fromARGB(214, 157, 157, 165)),

@@ -1,22 +1,33 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_s_m_app/provider/user_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../share/colors.dart';
 import '../share/contants.dart';
 
-
-
 class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({Key? key}) : super(key: key);
+  final userData;
+  const CommentsScreen({Key? key, required this.userData}) : super(key: key);
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
+  final commentController = TextEditingController();
+  @override
+  void dispose() {
+    commentController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       backgroundColor: mobileBackgroundColor,
       appBar: AppBar(
@@ -95,12 +106,30 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 ),
                 Expanded(
                   child: TextField(
+                      controller: commentController,
                       keyboardType: TextInputType.text,
                       obscureText: false,
                       decoration: decorationTextfield.copyWith(
-                          hintText: "Comment as  ALI HASSAN  ",
+                          hintText: "Comment as  Carvel  ",
                           suffixIcon: IconButton(
-                              onPressed: () {}, icon: Icon(Icons.send)))),
+                              onPressed: () async {
+                                String commentId = const Uuid().v1();
+                                await FirebaseFirestore.instance
+                                    .collection('posts')
+                                    .doc(widget.userData["postId"])
+                                    .collection("comments")
+                                    .doc(commentId)
+                                    .set({
+                                  "profilePic": userData!.imgUrl,
+                                  "username": userData.username,
+                                  "textComment": commentController.text,
+                                  "dataPublished": DateTime.now(),
+                                  "uid": userData.uid,
+                                  "commentId": commentId
+                                });
+                                commentController.clear();
+                              },
+                              icon: Icon(Icons.send)))),
                 ),
               ],
             ),

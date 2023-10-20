@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,31 @@ class UsersPostsContainer extends StatefulWidget {
 }
 
 class _UsersPostsContainerState extends State<UsersPostsContainer> {
+  int commentCount = 0;
+
+  getcommentCount() async {
+    try {
+      QuerySnapshot commentsData = await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(widget.data["postId"])
+          .collection("comments")
+          .get();
+
+      setState(() {
+        commentCount = commentsData.docs.length;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getcommentCount();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double widthScreen = MediaQuery.of(context).size.width;
@@ -41,12 +67,12 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 17,
                     ),
                     Text(
                       widget.data["username"],
-                      style: TextStyle(fontSize: 15),
+                      style: const TextStyle(fontSize: 15),
                     ),
                   ],
                 ),
@@ -77,6 +103,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => CommentsScreen(
+                                    showtextfield: true,
                                     userData: widget.data,
                                   )),
                         );
@@ -106,41 +133,50 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
               child: Text(
                 "${widget.data["likes"].length}  ${widget.data["likes"].length > 1 ? "Likes" : "like"} ",
                 textAlign: TextAlign.start,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18, color: Color.fromARGB(214, 157, 157, 165)),
               )),
           Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 9,
               ),
               Text(
                 // "${widget.snap["username"]}",
                 widget.data["username"],
                 textAlign: TextAlign.start,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 20, color: Color.fromARGB(255, 189, 196, 199)),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 16,
               ),
               Text(
                 // " ${widget.snap["description"]}",
                 widget.data["description"],
                 textAlign: TextAlign.start,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18, color: Color.fromARGB(255, 189, 196, 199)),
               ),
             ],
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CommentsScreen(
+                          showtextfield: false,
+                          userData: widget.data,
+                        )),
+              );
+            },
             child: Container(
                 margin: const EdgeInsets.fromLTRB(10, 13, 9, 10),
                 width: double.infinity,
-                child: const Text(
-                  "view all 100 comments",
-                  style: TextStyle(
+                child: Text(
+                  "view all $commentCount comments",
+                  style: const TextStyle(
                       fontSize: 18, color: Color.fromARGB(214, 157, 157, 165)),
                   textAlign: TextAlign.start,
                 )),
@@ -152,7 +188,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                 DateFormat('MMMM ,d,y')
                     .format(widget.data["datePublished"].toDate()),
                 // widget.data["datePublished"],
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18, color: Color.fromARGB(214, 157, 157, 165)),
                 textAlign: TextAlign.start,
               )),

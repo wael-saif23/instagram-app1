@@ -13,7 +13,10 @@ import '../share/contants.dart';
 
 class CommentsScreen extends StatefulWidget {
   final Map userData;
-  const CommentsScreen({Key? key, required this.userData}) : super(key: key);
+  final bool showtextfield;
+  const CommentsScreen(
+      {Key? key, required this.userData, required this.showtextfield})
+      : super(key: key);
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
@@ -125,46 +128,48 @@ class _CommentsScreenState extends State<CommentsScreen> {
               );
             },
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: 12),
-            child: Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 12),
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(125, 78, 91, 110),
-                  ),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(userData!.imgUrl),
-                    radius: 26,
-                  ),
-                ),
-                Expanded(
-                  child: TextField(
-                      controller: commentController,
-                      keyboardType: TextInputType.text,
-                      obscureText: false,
-                      decoration: decorationTextfield.copyWith(
-                          hintText: "Comment as  ${userData.username} ",
-                          suffixIcon: IconButton(
-                              onPressed: () async {
-                                FirestoreMethods().uploadComments(
-                                    postId: widget.userData["postId"],
-                                    profilePic: userData.imgUrl,
-                                    username: userData.username,
-                                    textComment: commentController.text,
-                                    uid: userData.uid,
-                                    context: context);
+          widget.showtextfield
+              ? Container(
+                  margin: EdgeInsets.only(bottom: 12),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 12),
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromARGB(125, 78, 91, 110),
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(userData!.imgUrl),
+                          radius: 26,
+                        ),
+                      ),
+                      Expanded(
+                        child: TextField(
+                            controller: commentController,
+                            keyboardType: TextInputType.text,
+                            obscureText: false,
+                            decoration: decorationTextfield.copyWith(
+                                hintText: "Comment as  ${userData.username} ",
+                                suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      FirestoreMethods().uploadComments(
+                                          postId: widget.userData["postId"],
+                                          profilePic: userData.imgUrl,
+                                          username: userData.username,
+                                          textComment: commentController.text,
+                                          uid: userData.uid,
+                                          context: context);
 
-                                commentController.clear();
-                              },
-                              icon: Icon(Icons.send)))),
-                ),
-              ],
-            ),
-          )
+                                      commentController.clear();
+                                    },
+                                    icon: Icon(Icons.send)))),
+                      ),
+                    ],
+                  ),
+                )
+              : Text("")
         ],
       ),
     );

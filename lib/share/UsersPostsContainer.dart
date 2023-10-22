@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +30,84 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+// to delet the post
+  showmodel() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          children: [
+            FirebaseAuth.instance.currentUser!.uid == widget.data["uid"]
+                ? SimpleDialogOption(
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      await FirebaseFirestore.instance
+                          .collection("posts")
+                          .doc(widget.data["postId"])
+                          .delete();
+                    },
+                    padding: const EdgeInsets.all(22),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.camera,
+                          size: 30,
+                        ),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
+                          "Delete the post!",
+                          style: TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  )
+                : const SimpleDialogOption(
+                    padding: EdgeInsets.all(22),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.camera,
+                          size: 30,
+                        ),
+                        SizedBox(
+                          width: 11,
+                        ),
+                        Text(
+                          "you cannot delete this post",
+                          style: TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
+            SimpleDialogOption(
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+              padding: const EdgeInsets.all(22),
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.photo_album,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 11,
+                  ),
+                  Text(
+                    "cancel",
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -76,7 +155,11 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                     ),
                   ],
                 ),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+                IconButton(
+                    onPressed: () {
+                      showmodel();
+                    },
+                    icon: const Icon(Icons.more_vert)),
               ],
             ),
           ),
@@ -177,7 +260,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                 child: Text(
                   "view all $commentCount comments",
                   style: const TextStyle(
-                      fontSize: 18, color: Color.fromARGB(214, 157, 157, 165)),
+                      fontSize: 18, color: Color.fromARGB(212, 73, 139, 240)),
                   textAlign: TextAlign.start,
                 )),
           ),

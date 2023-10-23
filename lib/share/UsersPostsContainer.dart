@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:insta_s_m_app/firebase_servises/firestore.dart';
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:intl/intl.dart';
 
@@ -189,8 +190,16 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_border),
+                      onPressed: () async {
+                        await FirestoreMethods().likes(data: widget.data);
+                      },
+                      icon: widget.data["likes"]
+                              .contains(FirebaseAuth.instance.currentUser!.uid)
+                          ? const Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            )
+                          : const Icon(Icons.favorite_border),
                     ),
                     IconButton(
                       onPressed: () {

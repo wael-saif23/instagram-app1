@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ class UsersPostsContainer extends StatefulWidget {
 
 class _UsersPostsContainerState extends State<UsersPostsContainer> {
   int commentCount = 0;
-
+  bool showHeart = false;
   getcommentCount() async {
     try {
       QuerySnapshot commentsData = await FirebaseFirestore.instance
@@ -111,6 +113,25 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
     );
   }
 
+  onClikeOnPic() async {
+    setState(() {
+      showHeart = true;
+    });
+
+    Timer(const Duration(seconds: 2), () {
+      setState(() {
+        showHeart = false;
+      });
+    });
+
+    await FirebaseFirestore.instance
+        .collection("posts")
+        .doc(widget.data["postId"])
+        .update({
+      "likes": FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.uid])
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -164,22 +185,40 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
               ],
             ),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              widget.data["imgPost"],
-              loadingBuilder: (context, child, progress) {
-                return progress == null
-                    ? child
-                    : Center(
-                        heightFactor: MediaQuery.of(context).size.height * 0.35,
-                        child: const CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        ));
-              },
-              fit: BoxFit.cover,
-              height: MediaQuery.of(context).size.height * 0.35,
-              width: double.infinity,
+          GestureDetector(
+            onDoubleTap: () async {
+              onClikeOnPic();
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    widget.data["imgPost"],
+                    loadingBuilder: (context, child, progress) {
+                      return progress == null
+                          ? child
+                          : Center(
+                              heightFactor:
+                                  MediaQuery.of(context).size.height * 0.35,
+                              child: const CircularProgressIndicator(
+                                backgroundColor: Colors.white,
+                              ));
+                    },
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    width: double.infinity,
+                  ),
+                ),
+                showHeart
+                    ? Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                        size: MediaQuery.of(context).size.height * 0.05,
+                      )
+                    : Text("")
+              ],
             ),
           ),
           Padding(

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/firebase_servises/firestore.dart';
 import 'package:insta_s_m_app/share/colors.dart';
+import 'package:insta_s_m_app/share/heart_animation.dart';
 import 'package:intl/intl.dart';
 
 import '../screens/comments.dart';
@@ -19,6 +20,7 @@ class UsersPostsContainer extends StatefulWidget {
 class _UsersPostsContainerState extends State<UsersPostsContainer> {
   int commentCount = 0;
   bool showHeart = false;
+  bool isLikeAnimating = false;
   getcommentCount() async {
     try {
       QuerySnapshot commentsData = await FirebaseFirestore.instance
@@ -115,13 +117,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
 
   onClikeOnPic() async {
     setState(() {
-      showHeart = true;
-    });
-
-    Timer(const Duration(seconds: 2), () {
-      setState(() {
-        showHeart = false;
-      });
+      isLikeAnimating = true;
     });
 
     await FirebaseFirestore.instance
@@ -211,13 +207,26 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                     width: double.infinity,
                   ),
                 ),
-                showHeart
-                    ? Icon(
-                        Icons.favorite,
-                        color: Colors.white,
-                        size: MediaQuery.of(context).size.height * 0.05,
-                      )
-                    : Text("")
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: isLikeAnimating ? 1 : 0,
+                  child: LikeAnimation(
+                    isAnimating: isLikeAnimating,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    onEnd: () {
+                      setState(() {
+                        isLikeAnimating = false;
+                      });
+                    },
+                    child: Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 111,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -228,17 +237,24 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
               children: [
                 Row(
                   children: [
-                    IconButton(
-                      onPressed: () async {
-                        await FirestoreMethods().likes(data: widget.data);
-                      },
-                      icon: widget.data["likes"]
-                              .contains(FirebaseAuth.instance.currentUser!.uid)
-                          ? const Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            )
-                          : const Icon(Icons.favorite_border),
+                    LikeAnimation(
+                      isAnimating: widget.data['likes']
+                          .contains(FirebaseAuth.instance.currentUser!.uid),
+                      smallLike: true,
+                      child: IconButton(
+                        onPressed: () async {
+                          await FirestoreMethods().likes(data: widget.data);
+                        },
+                        icon: widget.data['likes'].contains(
+                                FirebaseAuth.instance.currentUser!.uid)
+                            ? const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              )
+                            : const Icon(
+                                Icons.favorite_border,
+                              ),
+                      ),
                     ),
                     IconButton(
                       onPressed: () {

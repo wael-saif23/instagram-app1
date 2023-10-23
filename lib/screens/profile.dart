@@ -12,13 +12,13 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  late Map userData ;
+  late Map userData;
 
-  late bool isloading ;
-  late int following ;
-  late int followers ;
-  late int postsnumber ;
-  late bool isFollowing ;
+  late bool isloading;
+  late int following;
+  late int followers;
+  late int postsnumber;
+  late bool isFollowing;
   getdata() async {
     try {
       setState(() {
@@ -383,6 +383,13 @@ class _ProfileState extends State<Profile> {
                                   borderRadius: BorderRadius.circular(4),
                                   child: Image.network(
                                     snapshot.data!.docs[index]["imgPost"],
+                                    loadingBuilder: (context, child, progress) {
+                                      return progress == null
+                                          ? child
+                                          : Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                    },
                                     // height: 333,
                                     // width: 100,
 

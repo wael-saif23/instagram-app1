@@ -163,11 +163,23 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
               ],
             ),
           ),
-          Image.network(
-            widget.data["imgPost"],
-            fit: BoxFit.cover,
-            height: MediaQuery.of(context).size.height * 0.35,
-            width: double.infinity,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              widget.data["imgPost"],
+              loadingBuilder: (context, child, progress) {
+                return progress == null
+                    ? child
+                    : Center(
+                        heightFactor: MediaQuery.of(context).size.height * 0.35,
+                        child: const CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ));
+              },
+              fit: BoxFit.cover,
+              height: MediaQuery.of(context).size.height * 0.35,
+              width: double.infinity,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 11),

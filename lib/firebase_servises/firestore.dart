@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:insta_s_m_app/firebase_servises/storage.dart';
 import 'package:insta_s_m_app/models/posts.dart';
-import 'package:insta_s_m_app/models/user.dart';
 import 'package:insta_s_m_app/share/snackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
@@ -44,14 +41,14 @@ class FirestoreMethods {
       posts
           .doc(postId)
           .set(postsdata.convert2Map())
-          .then((value) => print("User Added"))
-          .catchError((error) => print("Failed to post: $error"));
+          .then((value) => message = "User Added")
+          .catchError((error) => message = "Failed to post: $error");
 
       message = " Posted successfully ♥ ♥";
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, "ERROR :  ${e.code} ");
     } catch (e) {
-      print(e);
+      message = (e.toString());
     }
     showSnackBar(context, message);
   }
@@ -86,12 +83,13 @@ class FirestoreMethods {
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, "ERROR :  ${e.code} ");
     } catch (e) {
-      print(e);
+      message = (e.toString());
     }
     showSnackBar(context, message);
   }
 
-  likes({required Map data}) async {
+  likes({required Map data, required context}) async {
+    String message = "";
     try {
       if (data["likes"].contains(FirebaseAuth.instance.currentUser!.uid)) {
         await FirebaseFirestore.instance
@@ -111,7 +109,8 @@ class FirestoreMethods {
         });
       }
     } catch (e) {
-      print(e.toString());
+      message = (e.toString());
     }
+    showSnackBar(context, message);
   }
 }

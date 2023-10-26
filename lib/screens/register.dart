@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -71,8 +70,8 @@ class _RegisterState extends State<Register> {
                 onTap: () async {
                   await uploadImage2Screen(ImageSource.camera);
                 },
-                child: Row(
-                  children: const [
+                child: const Row(
+                  children: [
                     Icon(
                       Icons.camera,
                       size: 30,
@@ -94,8 +93,8 @@ class _RegisterState extends State<Register> {
                 onTap: () {
                   uploadImage2Screen(ImageSource.gallery);
                 },
-                child: Row(
-                  children: const [
+                child: const Row(
+                  children: [
                     Icon(
                       Icons.photo_outlined,
                       size: 30,
@@ -154,7 +153,6 @@ class _RegisterState extends State<Register> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     emailController.dispose();
     passwordController.dispose();
 

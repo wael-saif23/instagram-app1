@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:insta_s_m_app/provider/user_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 import '../firebase_servises/firestore.dart';
 import '../share/colors.dart';

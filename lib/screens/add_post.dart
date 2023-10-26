@@ -79,8 +79,8 @@ class _AddPostState extends State<AddPost> {
                 await uploadImage2Screen(ImageSource.camera);
               },
               padding: const EdgeInsets.all(22),
-              child:  Row(
-                children:const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.camera,
                     size: 30,
@@ -100,8 +100,8 @@ class _AddPostState extends State<AddPost> {
                 uploadImage2Screen(ImageSource.gallery);
               },
               padding: const EdgeInsets.all(22),
-              child:  Row(
-                children:const [
+              child: const Row(
+                children: [
                   Icon(
                     Icons.photo_album,
                     size: 30,
@@ -128,8 +128,10 @@ class _AddPostState extends State<AddPost> {
     getdata();
   }
 
-  clickOnPost({required String imgUrl,required String username, }) async {
-    
+  clickOnPost({
+    required String imgUrl,
+    required String username,
+  }) async {
     if (imgName != null && imgPath != null) {
       setState(() {
         isPosted = false;
@@ -154,8 +156,6 @@ class _AddPostState extends State<AddPost> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-
     desController.dispose();
     super.dispose();
   }
@@ -183,9 +183,9 @@ class _AddPostState extends State<AddPost> {
               actions: [
                 TextButton(
                     onPressed: () {
-                      
-                    
-                      clickOnPost(imgUrl: allDataFromDB!.imgUrl, username:allDataFromDB.username);
+                      clickOnPost(
+                          imgUrl: allDataFromDB!.imgUrl,
+                          username: allDataFromDB.username);
                     },
                     child: const Text(
                       "Post",

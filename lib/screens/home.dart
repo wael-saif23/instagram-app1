@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:insta_s_m_app/share/UsersPostsContainer.dart';
+import 'package:insta_s_m_app/share/usersPostsContainer.dart';
 
 import 'package:insta_s_m_app/share/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -41,6 +40,7 @@ class _HomeState extends State<Home> {
               backgroundColor: mobileBackgroundColor,
               title: SvgPicture.asset(
                 "assets/img/instagram.svg",
+                // ignore: deprecated_member_use
                 color: primaryColor,
                 height: 32,
               ),
@@ -61,7 +61,9 @@ class _HomeState extends State<Home> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              return UsersPostsContainer(data:data ,);
+              return UsersPostsContainer(
+                data: data,
+              );
             }).toList(),
           );
         },
@@ -69,4 +71,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-

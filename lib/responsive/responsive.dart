@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:insta_s_m_app/provider/user_provider.dart';
 
@@ -8,8 +7,8 @@ import 'package:provider/provider.dart';
 class ResponsivePage extends StatefulWidget {
   const ResponsivePage(
       {super.key, required this.myWebScreen, required this.myMobileScreen});
-  final myWebScreen;
-  final myMobileScreen;
+  final Widget myWebScreen;
+  final Widget myMobileScreen;
   @override
   State<ResponsivePage> createState() => _ResponsivePageState();
 }

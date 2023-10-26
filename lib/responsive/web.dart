@@ -16,9 +16,9 @@ class WebScerren extends StatefulWidget {
 
 class _WebScerrenState extends State<WebScerren> {
   final PageController _pageController = PageController();
-  
+
   int screenNumber = 0;
-  
+
   double primaryIconSize = 32;
   double secondaryIconSizr = 24;
   @override
@@ -35,81 +35,76 @@ class _WebScerrenState extends State<WebScerren> {
           IconButton(
             icon: Icon(
               Icons.home,
-              color: screenNumber==0 ? primaryColor : secondaryColor,
-              size: screenNumber == 0? primaryIconSize :secondaryIconSizr,
+              color: screenNumber == 0 ? primaryColor : secondaryColor,
+              size: screenNumber == 0 ? primaryIconSize : secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(0);
-              
             },
           ),
           IconButton(
             icon: Icon(
               Icons.search,
-              color: screenNumber==1 ? primaryColor : secondaryColor,
-              size: screenNumber == 1? primaryIconSize :secondaryIconSizr,
+              color: screenNumber == 1 ? primaryColor : secondaryColor,
+              size: screenNumber == 1 ? primaryIconSize : secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(1);
-           
             },
           ),
           IconButton(
             icon: Icon(
               Icons.add_a_photo,
-              color: screenNumber==2 ? primaryColor : secondaryColor,
-              size: screenNumber == 2? primaryIconSize :secondaryIconSizr,
+              color: screenNumber == 2 ? primaryColor : secondaryColor,
+              size: screenNumber == 2 ? primaryIconSize : secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(2);
-          
             },
           ),
           IconButton(
             icon: Icon(
               Icons.favorite,
-              color: screenNumber==3 ? primaryColor : secondaryColor,
-              size: screenNumber == 3? primaryIconSize :secondaryIconSizr,
+              color: screenNumber == 3 ? primaryColor : secondaryColor,
+              size: screenNumber == 3 ? primaryIconSize : secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(3);
-        
             },
           ),
           IconButton(
             icon: Icon(
               Icons.person,
-              color: screenNumber==4 ? primaryColor : secondaryColor,
-              size: screenNumber == 4? primaryIconSize :secondaryIconSizr,
+              color: screenNumber == 4 ? primaryColor : secondaryColor,
+              size: screenNumber == 4 ? primaryIconSize : secondaryIconSizr,
             ),
             onPressed: () {
               _pageController.jumpToPage(4);
-           
             },
           ),
         ],
         backgroundColor: mobileBackgroundColor,
         title: SvgPicture.asset(
           "assets/img/instagram.svg",
-          color: primaryColor,
           height: 32,
         ),
       ),
       body: PageView(
         onPageChanged: (index) {
           setState(() {
-            screenNumber = index ;
-            
+            screenNumber = index;
           });
         },
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
-        children:  [
-          Home(),
-          Search(),
-          AddPost(),
-          Center(child: Text("Love u ♥")),
-          Profile(userUid: FirebaseAuth.instance.currentUser!.uid,),
+        children: [
+          const Home(),
+          const Search(),
+          const AddPost(),
+          const Center(child: Text("Love u ♥")),
+          Profile(
+            userUid: FirebaseAuth.instance.currentUser!.uid,
+          ),
         ],
       ),
     );

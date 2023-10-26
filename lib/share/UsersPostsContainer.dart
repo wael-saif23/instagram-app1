@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +128,6 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getcommentCount();
   }
@@ -220,7 +217,7 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                         isLikeAnimating = false;
                       });
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.favorite,
                       color: Colors.white,
                       size: 111,
@@ -243,7 +240,8 @@ class _UsersPostsContainerState extends State<UsersPostsContainer> {
                       smallLike: true,
                       child: IconButton(
                         onPressed: () async {
-                          await FirestoreMethods().likes(data: widget.data);
+                          await FirestoreMethods()
+                              .likes(data: widget.data, context: context);
                         },
                         icon: widget.data['likes'].contains(
                                 FirebaseAuth.instance.currentUser!.uid)

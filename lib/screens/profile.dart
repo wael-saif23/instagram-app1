@@ -386,7 +386,7 @@ class _ProfileState extends State<Profile> {
                                     loadingBuilder: (context, child, progress) {
                                       return progress == null
                                           ? child
-                                          : Center(
+                                          : const Center(
                                               child:
                                                   CircularProgressIndicator());
                                     },
